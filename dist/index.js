@@ -13,32 +13,38 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const db_1 = __importDefault(require("./db"));
-// Create an Express app
+const cors_1 = __importDefault(require("cors"));
+const db_1 = __importDefault(require("./lib/db"));
 const app = (0, express_1.default)();
-// Middleware to parse JSON requests
 app.use(express_1.default.json());
-// Simple route
+app.use((0, cors_1.default)());
+const studentRoutes_1 = __importDefault(require("./routes/studentRoutes"));
+const levelRoutes_1 = __importDefault(require("./routes/levelRoutes"));
+const testRoutes_1 = __importDefault(require("./routes/testRoutes"));
+const getStudentRoutes_1 = __importDefault(require("./routes/getStudentRoutes"));
+const gettSpecificStudents_1 = __importDefault(require("./routes/gettSpecificStudents"));
+const LevelDataRoutes_1 = __importDefault(require("./routes/LevelDataRoutes"));
+const FormRoutes_1 = __importDefault(require("./routes/FormRoutes"));
+const port = Number(process.env.PORT || 8080);
+app.use('/api/v1/auth', studentRoutes_1.default);
+app.use('/api/v1/student', studentRoutes_1.default);
+app.use('/api/v1/level', levelRoutes_1.default);
+app.use('/api/v1/test', testRoutes_1.default);
+app.use('/api/v1/data', getStudentRoutes_1.default);
+app.use('/api/v1/data/specific', gettSpecificStudents_1.default);
+app.use('/api/v1/data/c', LevelDataRoutes_1.default);
+app.use('/api/v1', FormRoutes_1.default);
 app.get('/', (req, res) => {
-    res.send('Hello, TypeScript with Express!');
-});
-// Another route
-app.get('/api/greet', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const users = yield db_1.default.user.findMany();
-    res.json({ users });
-}));
-app.get('/api/users', (req, res) => {
-    res.json({ message: 'Hello from users!' });
-});
-app.post('/api/checkdb', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { name } = req.body;
-    const user = yield db_1.default.user.create({
-        data: { name }
+    res.json({
+        message: "Hello World from Bun!!"
     });
-    res.json(user);
+});
+app.get('/users', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const users = yield db_1.default.student.count();
+    res.json({
+        count: users
+    });
 }));
-// Start the server
-const PORT = process.env.PORT || 8080;
-app.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}`);
+app.listen(port, () => {
+    console.log(`Server running on ${port}`);
 });

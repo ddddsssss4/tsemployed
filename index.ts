@@ -1,45 +1,44 @@
-import express, { Request, Response } from 'express';
-import db from './db';
-
-// Create an Express app
+import express from 'express'
+import cors from 'cors'
+import db from './lib/db';
 const app = express();
-
-
-// Middleware to parse JSON requests
 app.use(express.json());
-
-// Simple route
-app.get('/', (req: Request, res: Response) => {
-  res.send('Hello, TypeScript with Express!');
-});
-
-// Another route
-app.get('/api/greet', async (req: Request, res: Response) => {
-  const users= await db.user.findMany();
-  res.json({ users });
-});
-
-app.get('/api/users', (req: Request, res: Response) => {
-  res.json({ message: 'Hello from users!' });
-});
+app.use(cors());
+import studentRoutes from './routes/studentRoutes'
+import levelRoutes from './routes/levelRoutes'
+import testRoutes from './routes/testRoutes';
+import getStudentRoutes from './routes/getStudentRoutes'
+import getSpecificStudent from './routes/gettSpecificStudents'
+import LevelSpecific from './routes/LevelDataRoutes'
+import FormRoute from './routes/FormRoutes'
+const port=Number(process.env.PORT || 8080)
 
 
-app.post('/api/checkdb',async (req,res)=>{
-  const {name} =req.body;
 
 
-  const user = await db.user.create({
-    data: { name }
-  });
+app.use('/api/v1/auth',studentRoutes);
+app.use('/api/v1/student',studentRoutes);
+app.use('/api/v1/level',levelRoutes);
+app.use('/api/v1/test',testRoutes);
+app.use('/api/v1/data',getStudentRoutes );
+app.use('/api/v1/data/specific',getSpecificStudent);
+app.use('/api/v1/data/c',LevelSpecific);
+app.use('/api/v1',FormRoute);
+app.get('/',(req,res)=>{
+    res.json({
+        message : "Hello World from Bun!!"
+    })
+})
 
+app.get('/users',async (req,res)=>{
+    const users=await db.student.count();
+    res.json({
+        count:users
+    })
+})
 
-  res.json(user);
+app.listen(port,()=>{
+    console.log(`Server running on ${port}`);
 })
 
 
-
-// Start the server
-const PORT = process.env.PORT || 8080;
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
-});

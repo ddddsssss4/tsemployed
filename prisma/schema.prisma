@@ -14,7 +14,118 @@ datasource db {
 }
 
 
-model User{
-  id      Int      @id @default(autoincrement())
-  name    String
+enum StudentType {
+  KINDERGARTEN
+  PRIMARY
+  SECONDARY
+  HIGH_SCHOOL
+}
+
+model Student {
+  id            Int            @id @default(autoincrement())
+  email         String         @unique
+  name          String?
+  password      String
+  imageUrl      String?
+  uniqueId      String?        @unique
+  teacherId     Int?           
+  teacher       Teacher?       @relation(fields: [teacherId], references: [id])  
+  type          StudentType?
+  levelProgress LevelProgress[]
+  studentDetail StudentDetail?
+}
+
+model Teacher {
+  id            Int      @id @default(autoincrement())
+  email         String   @unique
+  name          String?
+  password      String
+  imageUrl      String?
+  uniqueId      String?  @unique
+  students      Student[]  
+}
+
+
+model Level {
+  id          Int    @id @default(autoincrement())
+  levelNumber Int    @unique  // Unique to ensure each level is unique
+  subLevels   SubLevel[]
+  LevelProgress LevelProgress[]
+}
+
+model SubLevel {
+  id          Int    @id @default(autoincrement())
+  name        String?
+  content     String?  // Store sub-level content or other necessary fields
+  levelId     Int
+  level       Level    @relation(fields: [levelId], references: [id])
+  order       Int?     // Order of sub-levels within the level
+  SubLevelProgress SubLevelProgress[]
+
+  DefaultLevel DefaultLevel[]
+}
+
+model LevelProgress {
+  id             Int   @id @default(autoincrement())
+  studentId      Int
+  levelId        Int
+  student        Student  @relation(fields: [studentId], references: [id])
+  level          Level    @relation(fields: [levelId], references: [id])
+  completed      Boolean  @default(false)
+  subLevelProgress SubLevelProgress[]
+  score          Float    @default(0.0)  // Track score for each level
+  attempts       Int      @default(0)    // Track the number of attempts taken
+  passCount      Int      @default(0)    // Track the number of times the level was passed
+  failCount      Int      @default(0)    // Track the number of times the level was failed
+  @@unique([studentId, levelId]) // Ensure uniqueness of the combination
+}
+
+model SubLevelProgress {
+  id              Int            @id @default(autoincrement())
+  levelProgressId Int
+  subLevelId      Int           
+  completed       Boolean        @default(false)
+  score           Float          @default(0.0)  // Track score for each sub-level
+  accuracy        Float?
+  completeness    Float?
+  pronunciation   Float? 
+  fluency         Float? 
+  levelProgress   LevelProgress  @relation(fields: [levelProgressId], references: [id])
+  subLevel        SubLevel       @relation(fields: [subLevelId], references: [id])
+  attempts        Int            @default(0)    // Track the number of attempts taken
+  passCount       Int            @default(0)    // Track the number of times the sub-level was passed
+  failCount       Int            @default(0)    // Track the number of times the sub-level was failed
+
+  @@unique([levelProgressId, subLevelId]) // Ensure uniqueness of the combination
+}
+
+// Define a default level and sublevels that will be used for all students
+model DefaultLevel {
+  id          Int    @id @default(autoincrement())
+  levelNumber Int    @unique
+  subLevels   SubLevel[]
+
+  DefaultSubLevel DefaultSubLevel[]
+}
+
+model DefaultSubLevel {
+  id          Int    @id @default(autoincrement())
+  name        String?
+  content     String?
+  levelId     Int
+  level       DefaultLevel @relation(fields: [levelId], references: [id])
+  order       Int?
+}
+
+
+model StudentDetail {
+  id            Int        @id @default(autoincrement())
+  studentId     Int        @unique  // Ensure only one detail per student
+  student       Student    @relation(fields: [studentId], references: [id])
+  age           Int?
+  favoriteColor String?
+  grade         String?
+  skillLevel    String?
+  ethnicity     String?
+  background    String?
 }
