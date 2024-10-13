@@ -5,10 +5,15 @@ import db from "../lib/db"; // Ensure the path is correct for your project
 // Teacher Login
 export const teacherLogin = async (req: Request, res: Response) => {
   const { email, password } = req.body;
+  const a = console.log(req.body)
+  console.log(a)
 
   // Check if email and password are provided
   if (!email || !password) {
-    return res.status(400).json({ error: "Email and password are required" });
+    return res.status(400).json(
+      { error: "Email and password are required" ,a},
+    
+    ) ;
   }
 
   try {

@@ -5,7 +5,7 @@ const router =express.Router();
 //@ts-ignore
 router.post('/signup',signUp);
 router.get('/allstudents',getAllStudents);
-router.get('/login')
+router.post('/login')
 // router.post('/createstudentLevel',createLevel);
 // router.put('/updatestudent',scoreCreate);
 

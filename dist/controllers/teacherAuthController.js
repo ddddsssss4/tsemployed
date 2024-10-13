@@ -18,9 +18,11 @@ const db_1 = __importDefault(require("../lib/db")); // Ensure the path is correc
 // Teacher Login
 const teacherLogin = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { email, password } = req.body;
+    const a = console.log(req.body);
+    console.log(a);
     // Check if email and password are provided
     if (!email || !password) {
-        return res.status(400).json({ error: "Email and password are required" });
+        return res.status(400).json({ error: "Email and password are required", a });
     }
     try {
         // Fetch the teacher using email
