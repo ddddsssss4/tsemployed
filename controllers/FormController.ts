@@ -5,8 +5,9 @@ import db from '../lib/db';
 
 // POST route to submit student details
 export const submitStudentDetails = async (req: Request, res: Response) => {
+  console.log(1);
   const { studentId, age, favoriteColor, grade, skillLevel, ethnicity, background } = req.body;
-
+  console.log(req.body);
   if (!studentId) {
     return res.status(400).json({ error: 'Student ID is required.' });
   }
@@ -14,7 +15,7 @@ export const submitStudentDetails = async (req: Request, res: Response) => {
   try {
     // Check if student exists
     const student = await db.student.findUnique({
-      where: { id: parseInt(studentId) },
+      where: { id: Number.parseInt(studentId) },
     });
 
     if (!student) {
@@ -23,7 +24,7 @@ export const submitStudentDetails = async (req: Request, res: Response) => {
 
     // Create or update student details
     const studentDetail = await db.studentDetail.upsert({
-      where: { studentId: parseInt(studentId) },
+      where: { studentId: Number.parseInt(studentId) },
       update: {
         age,
         favoriteColor,
@@ -33,7 +34,7 @@ export const submitStudentDetails = async (req: Request, res: Response) => {
         background,
       },
       create: {
-        studentId: parseInt(studentId),
+        studentId: Number.parseInt(studentId),
         age,
         favoriteColor,
         grade,
@@ -52,7 +53,8 @@ export const submitStudentDetails = async (req: Request, res: Response) => {
 
 // GET route to retrieve student details
 export const getStudentDetails = async (req: Request, res: Response) => {
-  const { studentId } = req.query;
+  console.log(1);
+  const {studentId} = req.params
   console.log(studentId);
 
   if (!studentId) {
@@ -62,7 +64,7 @@ export const getStudentDetails = async (req: Request, res: Response) => {
   try {
     const studentDetail = await db.studentDetail.findUnique({
       //@ts-ignore
-      where: { studentId: parseInt(studentId) },
+      where: { studentId: Number.parseInt(studentId) },
     });
 
     if (!studentDetail) {

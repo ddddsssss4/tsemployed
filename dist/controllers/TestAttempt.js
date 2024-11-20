@@ -16,7 +16,7 @@ exports.testAttempt = void 0;
 const db_1 = __importDefault(require("../lib/db"));
 const testAttempt = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { total_score, levelId, sublevelNo, studentId, pronunciation, fluency, completeness } = req.body;
-    console.log("inside controller of test attempt");
+    console.log("Inside controller of test attempt");
     console.log(req.body);
     if (!total_score || !levelId || !sublevelNo || !studentId) {
         return res.status(400).json({ error: 'All fields are required.' });
@@ -26,8 +26,8 @@ const testAttempt = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         const levelProgress = yield db_1.default.levelProgress.findUnique({
             where: {
                 studentId_levelId: {
-                    studentId: parseInt(studentId),
-                    levelId: parseInt(levelId),
+                    studentId: Number.parseInt(studentId),
+                    levelId: Number.parseInt(levelId),
                 },
             },
         });
@@ -37,8 +37,8 @@ const testAttempt = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         // Fetch the sublevel based on levelId and sublevelNo
         const subLevel = yield db_1.default.subLevel.findFirst({
             where: {
-                levelId: parseInt(levelId),
-                order: parseInt(sublevelNo),
+                levelId: Number.parseInt(levelId),
+                order: Number.parseInt(sublevelNo),
             },
         });
         if (!subLevel) {
@@ -56,16 +56,16 @@ const testAttempt = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
             subLevelProgress = yield db_1.default.subLevelProgress.update({
                 where: { id: subLevelProgress.id },
                 data: {
-                    score: parseFloat(total_score),
-                    pronunciation: parseFloat(pronunciation),
-                    fluency: parseFloat(fluency),
-                    completeness: parseFloat(completeness),
-                    completed: parseFloat(total_score) >= 8.5, // Mark as completed if score is high enough
+                    score: Number.parseFloat(total_score),
+                    pronunciation: Number.parseFloat(pronunciation),
+                    fluency: Number.parseFloat(fluency),
+                    completeness: Number.parseFloat(completeness),
+                    completed: Number.parseFloat(total_score) >= 8.5, // Mark as completed if score is high enough
                     attempts: {
                         increment: 1,
                     },
-                    passCount: parseFloat(total_score) >= 8.5 ? { increment: 1 } : undefined,
-                    failCount: parseFloat(total_score) < 8.5 ? { increment: 1 } : undefined,
+                    passCount: Number.parseFloat(total_score) >= 8.5 ? { increment: 1 } : undefined,
+                    failCount: Number.parseFloat(total_score) < 8.5 ? { increment: 1 } : undefined,
                 },
             });
         }
@@ -75,20 +75,20 @@ const testAttempt = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
                 data: {
                     levelProgressId: levelProgress.id,
                     subLevelId: subLevel.id,
-                    score: parseFloat(total_score),
-                    pronunciation: parseFloat(pronunciation),
-                    fluency: parseFloat(fluency),
-                    completeness: parseFloat(completeness),
-                    completed: parseFloat(total_score) >= 8.5,
+                    score: Number.parseFloat(total_score),
+                    pronunciation: Number.parseFloat(pronunciation),
+                    fluency: Number.parseFloat(fluency),
+                    completeness: Number.parseFloat(completeness),
+                    completed: Number.parseFloat(total_score) >= 8.5,
                     attempts: 1,
-                    passCount: parseFloat(total_score) >= 8.5 ? 1 : 0,
-                    failCount: parseFloat(total_score) < 8.5 ? 1 : 0,
+                    passCount: Number.parseFloat(total_score) >= 8.5 ? 1 : 0,
+                    failCount: Number.parseFloat(total_score) < 8.5 ? 1 : 0,
                 },
             });
         }
         // Check if all sublevels in this level are completed
         const totalSubLevels = yield db_1.default.subLevel.count({
-            where: { levelId: parseInt(levelId) },
+            where: { levelId: Number.parseInt(levelId) },
         });
         const completedSubLevels = yield db_1.default.subLevelProgress.count({
             where: {
@@ -104,7 +104,7 @@ const testAttempt = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
             });
             // Check if there's a next level and create it if necessary
             const existingLevel = yield db_1.default.level.findUnique({
-                where: { id: parseInt(levelId) },
+                where: { id: Number.parseInt(levelId) },
             });
             if (!existingLevel) {
                 throw new Error(`Level with ID ${levelId} not found.`);

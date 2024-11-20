@@ -3,7 +3,7 @@ import db from '../lib/db';
 
 export const specificStudentData = async (req: Request, res: Response) => {
   try {
-    const studentId = parseInt(req.params.id);
+    const studentId = Number.parseInt(req.params.teacherId);
 
     // Fetch the student details using the studentId
     const student = await db.student.findUnique({

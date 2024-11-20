@@ -3,6 +3,7 @@ import db from '../lib/db';
 
 export const levelAttempt = async (req: Request, res: Response) => {
   const { studentId, sub_level, targetLevel } = req.body;
+  console.log(req.body);
 
   if (!studentId || sub_level === undefined || !targetLevel) {
     return res.status(400).json({ error: "All fields are required" });
@@ -105,7 +106,7 @@ export const levelAttempt = async (req: Request, res: Response) => {
     for (let i = 0; i < sub_level; i++) {
       const sublevel = allSubLevels[i];
 
-      let subLevelProgress = await db.subLevelProgress.findUnique({
+      const subLevelProgress = await db.subLevelProgress.findUnique({
         where: {
           levelProgressId_subLevelId: {
             levelProgressId: levelProgress.id,

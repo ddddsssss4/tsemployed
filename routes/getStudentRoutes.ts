@@ -1,7 +1,13 @@
-import  express from 'express'
+import  express,{Response , Request} from 'express'
 
-import { getData } from '../controllers/getStudentController';
+import { getCardData,cardDetails} from '../controllers/getStudentController';
 const router = express.Router();
 
-  router.get('/student',getData)
+router.get('/student/data/:teacherId', (req: Request, res: Response) => { 
+  getCardData(req, res); 
+})
+  //@ts-ignore
+router.get('/student/cardDetails/:studentId', (req: request, res: Response) => {
+  cardDetails(req, res);
+});
 export default router

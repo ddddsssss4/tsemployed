@@ -16,7 +16,7 @@ exports.specificStudentData = void 0;
 const db_1 = __importDefault(require("../lib/db"));
 const specificStudentData = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const studentId = parseInt(req.params.id);
+        const studentId = Number.parseInt(req.params.teacherId);
         // Fetch the student details using the studentId
         const student = yield db_1.default.student.findUnique({
             where: { id: studentId },

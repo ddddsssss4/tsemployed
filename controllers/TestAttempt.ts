@@ -4,7 +4,7 @@ import db from '../lib/db';
 export const testAttempt = async (req: Request, res: Response) => {
   const { total_score, levelId, sublevelNo, studentId, pronunciation, fluency, completeness } = req.body;
 
-  console.log("inside controller of test attempt");
+  console.log("Inside controller of test attempt");
   
   console.log(req.body);
 
@@ -17,8 +17,8 @@ export const testAttempt = async (req: Request, res: Response) => {
     const levelProgress = await db.levelProgress.findUnique({
       where: {
         studentId_levelId: {
-          studentId: parseInt(studentId),
-          levelId: parseInt(levelId),
+          studentId: Number.parseInt(studentId),
+          levelId: Number.parseInt(levelId),
         },
       },
     });
@@ -30,8 +30,8 @@ export const testAttempt = async (req: Request, res: Response) => {
     // Fetch the sublevel based on levelId and sublevelNo
     const subLevel = await db.subLevel.findFirst({
       where: {
-        levelId: parseInt(levelId),
-        order: parseInt(sublevelNo),
+        levelId: Number.parseInt(levelId),
+        order: Number.parseInt(sublevelNo),
       },
     });
 
@@ -52,16 +52,16 @@ export const testAttempt = async (req: Request, res: Response) => {
       subLevelProgress = await db.subLevelProgress.update({
         where: { id: subLevelProgress.id },
         data: {
-          score: parseFloat(total_score),
-          pronunciation: parseFloat(pronunciation),
-          fluency: parseFloat(fluency),
-          completeness: parseFloat(completeness),
-          completed: parseFloat(total_score) >= 8.5, // Mark as completed if score is high enough
+          score: Number.parseFloat(total_score),
+          pronunciation: Number.parseFloat(pronunciation),
+          fluency: Number.parseFloat(fluency),
+          completeness: Number.parseFloat(completeness),
+          completed: Number.parseFloat(total_score) >= 8.5, // Mark as completed if score is high enough
           attempts: {
             increment: 1,
           },
-          passCount: parseFloat(total_score) >= 8.5 ? { increment: 1 } : undefined,
-          failCount: parseFloat(total_score) < 8.5 ? { increment: 1 } : undefined,
+          passCount: Number.parseFloat(total_score) >= 8.5 ? { increment: 1 } : undefined,
+          failCount: Number.parseFloat(total_score) < 8.5 ? { increment: 1 } : undefined,
         },
       });
     } else {
@@ -70,21 +70,21 @@ export const testAttempt = async (req: Request, res: Response) => {
         data: {
           levelProgressId: levelProgress.id,
           subLevelId: subLevel.id,
-          score: parseFloat(total_score),
-          pronunciation: parseFloat(pronunciation),
-          fluency: parseFloat(fluency),
-          completeness: parseFloat(completeness),
-          completed: parseFloat(total_score) >= 8.5,
+          score: Number.parseFloat(total_score),
+          pronunciation: Number.parseFloat(pronunciation),
+          fluency: Number.parseFloat(fluency),
+          completeness: Number.parseFloat(completeness),
+          completed: Number.parseFloat(total_score) >= 8.5,
           attempts: 1,
-          passCount: parseFloat(total_score) >= 8.5 ? 1 : 0,
-          failCount: parseFloat(total_score) < 8.5 ? 1 : 0,
+          passCount: Number.parseFloat(total_score) >= 8.5 ? 1 : 0,
+          failCount: Number.parseFloat(total_score) < 8.5 ? 1 : 0,
         },
       });
     }
 
     // Check if all sublevels in this level are completed
     const totalSubLevels = await db.subLevel.count({
-      where: { levelId: parseInt(levelId) },
+      where: { levelId: Number.parseInt(levelId) },
     });
 
     const completedSubLevels = await db.subLevelProgress.count({
@@ -103,7 +103,7 @@ export const testAttempt = async (req: Request, res: Response) => {
 
       // Check if there's a next level and create it if necessary
       const existingLevel = await db.level.findUnique({
-        where: { id: parseInt(levelId) },
+        where: { id: Number.parseInt(levelId) },
       });
 
       if (!existingLevel) {

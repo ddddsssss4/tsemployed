@@ -24,14 +24,14 @@ const submitStudentDetails = (req, res) => __awaiter(void 0, void 0, void 0, fun
     try {
         // Check if student exists
         const student = yield db_1.default.student.findUnique({
-            where: { id: parseInt(studentId) },
+            where: { id: Number.parseInt(studentId) },
         });
         if (!student) {
             return res.status(404).json({ error: 'Student not found.' });
         }
         // Create or update student details
         const studentDetail = yield db_1.default.studentDetail.upsert({
-            where: { studentId: parseInt(studentId) },
+            where: { studentId: Number.parseInt(studentId) },
             update: {
                 age,
                 favoriteColor,
@@ -41,7 +41,7 @@ const submitStudentDetails = (req, res) => __awaiter(void 0, void 0, void 0, fun
                 background,
             },
             create: {
-                studentId: parseInt(studentId),
+                studentId: Number.parseInt(studentId),
                 age,
                 favoriteColor,
                 grade,
@@ -68,7 +68,7 @@ const getStudentDetails = (req, res) => __awaiter(void 0, void 0, void 0, functi
     try {
         const studentDetail = yield db_1.default.studentDetail.findUnique({
             //@ts-ignore
-            where: { studentId: parseInt(studentId) },
+            where: { studentId: Number.parseInt(studentId) },
         });
         if (!studentDetail) {
             return res.status(404).json({ error: 'Student details not found.' });

@@ -1,9 +1,9 @@
-import type { Request, Response } from "express";
+t import type { Request, Response } from "express";
 import db from '../lib/db';
 
 export const LevelData = async (req: Request, res: Response) => {
   try {
-    const studentId = parseInt(req.params.id);
+    const studentId = Number.parseInt(req.params.studentId);
     const resultFilter = req.query.result as string; // Get the result query parameter
 
     // Fetch the student data with their sub-level progress
@@ -29,28 +29,28 @@ export const LevelData = async (req: Request, res: Response) => {
     let subLevelCount = 0;
 
     // Iterate over levelProgress and subLevelProgress
-    student.levelProgress.forEach(levelProgress => {
-      levelProgress.subLevelProgress.forEach(subLevelProgress => {
+    for (const levelProgress of student.levelProgress) {
+      for (const subLevelProgress of levelProgress.subLevelProgress) {
         // Filter based on the result query parameter
         const passed = subLevelProgress.passCount > 0;
         const failed = subLevelProgress.failCount > 0;
-
+    
         if (
           (resultFilter === 'pass' && passed) ||
           (resultFilter === 'fail' && failed) ||
           !resultFilter // If no filter is provided, include all
         ) {
-          // @ts-ignore 
-          totalAccuracy += (subLevelProgress.accuracy)
-          // @ts-ignore 
-
+          // @ts-ignore
+          totalAccuracy += subLevelProgress.accuracy;
+          // @ts-ignore
           totalPronunciation += subLevelProgress.pronunciation;
           // @ts-ignore
           totalFluency += subLevelProgress.fluency;
           subLevelCount++;
         }
-      });
-    });
+      }
+    }
+
 
     // Calculate the averages
     const averageAccuracy = subLevelCount > 0 ? (totalAccuracy / subLevelCount).toFixed(2) : 0;

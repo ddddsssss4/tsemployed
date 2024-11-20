@@ -18,7 +18,7 @@ const db_1 = __importDefault(require("./lib/db"));
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
 app.use((0, cors_1.default)());
-const studentRoutes_1 = __importDefault(require("./routes/studentRoutes"));
+const studentAuthRoutes_1 = __importDefault(require("./routes/studentAuthRoutes"));
 const levelRoutes_1 = __importDefault(require("./routes/levelRoutes"));
 const testRoutes_1 = __importDefault(require("./routes/testRoutes"));
 const getStudentRoutes_1 = __importDefault(require("./routes/getStudentRoutes"));
@@ -26,16 +26,15 @@ const gettSpecificStudents_1 = __importDefault(require("./routes/gettSpecificStu
 const LevelDataRoutes_1 = __importDefault(require("./routes/LevelDataRoutes"));
 const FormRoutes_1 = __importDefault(require("./routes/FormRoutes"));
 const port = Number(process.env.PORT || 8081);
-const teacherLogin_1 = __importDefault(require("./routes/teacherLogin"));
-app.use('/api/v1/auth', studentRoutes_1.default);
-app.use('/api/v1/student', studentRoutes_1.default);
+const teacherAuthRouter_1 = __importDefault(require("./routes/teacherAuthRouter"));
+app.use('/api/v1/student', studentAuthRoutes_1.default);
 app.use('/api/v1/level', levelRoutes_1.default);
 app.use('/api/v1/test', testRoutes_1.default);
 app.use('/api/v1/data', getStudentRoutes_1.default);
 app.use('/api/v1/data/specific', gettSpecificStudents_1.default);
 app.use('/api/v1/data/c', LevelDataRoutes_1.default);
 app.use('/api/v1', FormRoutes_1.default);
-app.use('/api/v1/teacher', teacherLogin_1.default);
+app.use('/api/v1/teacher', teacherAuthRouter_1.default);
 app.get('/', (req, res) => {
     res.json({
         message: "Hello World from Bun!!"

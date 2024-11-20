@@ -10,7 +10,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = "postgresql://content:1911@devS@content.postgres.database.azure.com:5432/postgres?sslmode=require"
+  url      = "postgresql://content:1911@devS@content.postgres.database.azure.com:5432/postgres?sslmode=require&connect_timeout=15"
 }
 
 
@@ -28,20 +28,20 @@ model Student {
   password      String
   imageUrl      String?
   uniqueId      String?        @unique
-  teacherId     Int?           
-  teacher       Teacher?       @relation(fields: [teacherId], references: [id])  
+  teacherId     String?           
+  teacher       Teacher?       @relation(fields: [teacherId], references: [uniqueId])  
   type          StudentType?
   levelProgress LevelProgress[]
   studentDetail StudentDetail?
 }
 
 model Teacher {
-  id            Int      @id @default(autoincrement())
-  email         String   @unique
+  id            String     @id @default(uuid())
+  email         String     @unique
   name          String?
   password      String
   imageUrl      String?
-  uniqueId      String?  @unique
+  uniqueId      String?    @unique
   students      Student[]  
 }
 
@@ -62,7 +62,7 @@ model SubLevel {
   order       Int?     // Order of sub-levels within the level
   SubLevelProgress SubLevelProgress[]
 
-  DefaultLevel DefaultLevel[]
+  // DefaultLevel DefaultLevel[]
 }
 
 model LevelProgress {
@@ -100,22 +100,22 @@ model SubLevelProgress {
 }
 
 // Define a default level and sublevels that will be used for all students
-model DefaultLevel {
-  id          Int    @id @default(autoincrement())
-  levelNumber Int    @unique
-  subLevels   SubLevel[]
+// model DefaultLevel {
+//   id          Int    @id @default(autoincrement())
+//   levelNumber Int    @unique
+//   subLevels   SubLevel[]
 
-  DefaultSubLevel DefaultSubLevel[]
-}
+//   DefaultSubLevel DefaultSubLevel[]
+// }
 
-model DefaultSubLevel {
-  id          Int    @id @default(autoincrement())
-  name        String?
-  content     String?
-  levelId     Int
-  level       DefaultLevel @relation(fields: [levelId], references: [id])
-  order       Int?
-}
+// model DefaultSubLevel {
+//   id          Int    @id @default(autoincrement())
+//   name        String?
+//   content     String?
+//   levelId     Int
+//   level       DefaultLevel @relation(fields: [levelId], references: [id])
+//   order       Int?
+// }
 
 
 model StudentDetail {

@@ -16,7 +16,7 @@ exports.LevelData = void 0;
 const db_1 = __importDefault(require("../lib/db"));
 const LevelData = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const studentId = parseInt(req.params.id);
+        const studentId = Number.parseInt(req.params.id);
         const resultFilter = req.query.result; // Get the result query parameter
         // Fetch the student data with their sub-level progress
         const student = yield db_1.default.student.findUnique({
@@ -38,8 +38,8 @@ const LevelData = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         let totalFluency = 0;
         let subLevelCount = 0;
         // Iterate over levelProgress and subLevelProgress
-        student.levelProgress.forEach(levelProgress => {
-            levelProgress.subLevelProgress.forEach(subLevelProgress => {
+        for (const levelProgress of student.levelProgress) {
+            for (const subLevelProgress of levelProgress.subLevelProgress) {
                 // Filter based on the result query parameter
                 const passed = subLevelProgress.passCount > 0;
                 const failed = subLevelProgress.failCount > 0;
@@ -47,16 +47,16 @@ const LevelData = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                     (resultFilter === 'fail' && failed) ||
                     !resultFilter // If no filter is provided, include all
                 ) {
-                    // @ts-ignore 
-                    totalAccuracy += (subLevelProgress.accuracy);
-                    // @ts-ignore 
+                    // @ts-ignore
+                    totalAccuracy += subLevelProgress.accuracy;
+                    // @ts-ignore
                     totalPronunciation += subLevelProgress.pronunciation;
                     // @ts-ignore
                     totalFluency += subLevelProgress.fluency;
                     subLevelCount++;
                 }
-            });
-        });
+            }
+        }
         // Calculate the averages
         const averageAccuracy = subLevelCount > 0 ? (totalAccuracy / subLevelCount).toFixed(2) : 0;
         const averagePronunciation = subLevelCount > 0 ? (totalPronunciation / subLevelCount).toFixed(2) : 0;

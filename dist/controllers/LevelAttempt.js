@@ -16,6 +16,7 @@ exports.levelAttempt = void 0;
 const db_1 = __importDefault(require("../lib/db"));
 const levelAttempt = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { studentId, sub_level, targetLevel } = req.body;
+    console.log(req.body);
     if (!studentId || sub_level === undefined || !targetLevel) {
         return res.status(400).json({ error: "All fields are required" });
     }
@@ -102,7 +103,7 @@ const levelAttempt = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         // Create or update SubLevelProgress records for all relevant sub-levels
         for (let i = 0; i < sub_level; i++) {
             const sublevel = allSubLevels[i];
-            let subLevelProgress = yield db_1.default.subLevelProgress.findUnique({
+            const subLevelProgress = yield db_1.default.subLevelProgress.findUnique({
                 where: {
                     levelProgressId_subLevelId: {
                         levelProgressId: levelProgress.id,
