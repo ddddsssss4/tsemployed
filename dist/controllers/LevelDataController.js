@@ -16,7 +16,7 @@ exports.LevelData = void 0;
 const db_1 = __importDefault(require("../lib/db"));
 const LevelData = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const studentId = Number.parseInt(req.params.id);
+        const studentId = Number.parseInt(req.params.studentId);
         const resultFilter = req.query.result; // Get the result query parameter
         // Fetch the student data with their sub-level progress
         const student = yield db_1.default.student.findUnique({

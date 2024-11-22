@@ -17,7 +17,9 @@ exports.getStudentDetails = exports.submitStudentDetails = void 0;
 const db_1 = __importDefault(require("../lib/db"));
 // POST route to submit student details
 const submitStudentDetails = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log(1);
     const { studentId, age, favoriteColor, grade, skillLevel, ethnicity, background } = req.body;
+    console.log(req.body);
     if (!studentId) {
         return res.status(400).json({ error: 'Student ID is required.' });
     }
@@ -60,7 +62,8 @@ const submitStudentDetails = (req, res) => __awaiter(void 0, void 0, void 0, fun
 exports.submitStudentDetails = submitStudentDetails;
 // GET route to retrieve student details
 const getStudentDetails = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { studentId } = req.query;
+    console.log(1);
+    const { studentId } = req.params;
     console.log(studentId);
     if (!studentId) {
         return res.status(400).json({ error: 'Student ID is required.' });

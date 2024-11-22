@@ -1,4 +1,4 @@
-t import type { Request, Response } from "express";
+ import type { Request, Response } from "express";
 import db from '../lib/db';
 
 export const LevelData = async (req: Request, res: Response) => {

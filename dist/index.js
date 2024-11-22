@@ -22,7 +22,6 @@ const studentAuthRoutes_1 = __importDefault(require("./routes/studentAuthRoutes"
 const levelRoutes_1 = __importDefault(require("./routes/levelRoutes"));
 const testRoutes_1 = __importDefault(require("./routes/testRoutes"));
 const getStudentRoutes_1 = __importDefault(require("./routes/getStudentRoutes"));
-const gettSpecificStudents_1 = __importDefault(require("./routes/gettSpecificStudents"));
 const LevelDataRoutes_1 = __importDefault(require("./routes/LevelDataRoutes"));
 const FormRoutes_1 = __importDefault(require("./routes/FormRoutes"));
 const port = Number(process.env.PORT || 8081);
@@ -31,9 +30,9 @@ app.use('/api/v1/student', studentAuthRoutes_1.default);
 app.use('/api/v1/level', levelRoutes_1.default);
 app.use('/api/v1/test', testRoutes_1.default);
 app.use('/api/v1/data', getStudentRoutes_1.default);
-app.use('/api/v1/data/specific', gettSpecificStudents_1.default);
-app.use('/api/v1/data/c', LevelDataRoutes_1.default);
-app.use('/api/v1', FormRoutes_1.default);
+// app.use('/api/v1/data/specific',getSpecificStudent);
+app.use('/api/v1/level/data', LevelDataRoutes_1.default);
+app.use('/api/v1/studentDetails', FormRoutes_1.default);
 app.use('/api/v1/teacher', teacherAuthRouter_1.default);
 app.get('/', (req, res) => {
     res.json({

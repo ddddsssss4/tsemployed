@@ -10,5 +10,5 @@ const router = express_1.default.Router();
 //@ts-ignore
 router.post('/student-form', FormController_1.submitStudentDetails);
 //@ts-ignore
-router.get('/student-form', FormController_2.getStudentDetails);
+router.get('/student-form/:studentId', FormController_2.getStudentDetails);
 exports.default = router;

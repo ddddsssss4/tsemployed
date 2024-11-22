@@ -8,21 +8,9 @@ export const getCardData = async (req: Request, res: Response) => {
   try
   {
 
-    const teacher = await db.teacher.findUnique({
-          where: {
-            id: teacherId,
-          },
-          select: {
-            uniqueId: true,
-          },
-        });
-    console.log(teacher);
-
     const students = await db.student.findMany({
       where: {
-        teacher:{
-          uniqueId:teacher?.uniqueId
-        }
+        teacherId: teacherId
       },
       include: {
         levelProgress: {

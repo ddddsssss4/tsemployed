@@ -7,5 +7,5 @@ const express_1 = __importDefault(require("express"));
 const LevelDataController_1 = require("../controllers/LevelDataController");
 const router = express_1.default.Router();
 //@ts-ignore
-router.get('/student/:id/data', LevelDataController_1.LevelData);
+router.get('/student/:studentId', LevelDataController_1.LevelData);
 exports.default = router;
