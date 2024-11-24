@@ -7,7 +7,7 @@
     "build": "tsc && prisma generate",
     "start": "node dist/index.js",
     "dev": "nodemon --watch '/**/*.ts' --exec 'ts-node' index.ts",
-    "watch": "bun run --watch index.ts" 
+    "watch": "bun run --watch index.ts"
   },
   "keywords": [],
   "author": "",

@@ -73,11 +73,14 @@ const teacherSignup = (req, res) => __awaiter(void 0, void 0, void 0, function* 
                 uniqueId: teacherId,
             },
         });
-        console.log(newTeacher);
-        const token = jsonwebtoken_1.default.sign(newTeacher.id, "secretOrPrivateKey");
-        console.log(token);
+        // Generate JWT token, including the teacher's id in the payload
+        const token = jsonwebtoken_1.default.sign({ id: newTeacher.id }, "secretOrPrivateKey", { expiresIn: "1h" });
         // Registration successful, return the new teacher info
-        return res.status(201).json({ message: "Teacher registered successfully", token });
+        return res.status(201).json({
+            message: "Teacher registered successfully",
+            teacher: newTeacher,
+            token,
+        });
     }
     catch (error) {
         console.error(error);
