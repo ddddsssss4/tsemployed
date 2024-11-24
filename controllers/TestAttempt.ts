@@ -3,7 +3,7 @@ import db from '../lib/db';
 
 export const testAttempt = async (req: Request, res: Response) => {
   const { total_score, levelId, sublevelNo, studentId, pronunciation, fluency, completeness } = req.body;
-
+  
   console.log("Inside controller of test attempt");
   
   console.log(req.body);
