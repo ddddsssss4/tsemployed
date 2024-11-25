@@ -25,6 +25,7 @@ export const signUp = async (req: Request, res: Response) => {
   const existingUser = await db.student.findFirst({
     where: { email }
   });
+   console.log(existingUser);
 
   if (existingUser) {
     return res.status(400).json({ error: "User with this email already exists." });
