@@ -16,6 +16,7 @@ exports.testAttempt = void 0;
 const db_1 = __importDefault(require("../lib/db"));
 const testAttempt = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { total_score, levelId, sublevelNo, studentId, pronunciation, fluency, completeness } = req.body;
+    console.log("bhailog");
     console.log("Inside controller of test attempt");
     console.log(req.body);
     if (!total_score || !levelId || !sublevelNo || !studentId) {

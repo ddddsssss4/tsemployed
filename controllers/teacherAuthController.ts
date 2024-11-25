@@ -60,7 +60,7 @@ export const teacherSignup = async (req: Request, res: Response) => {
     }
 
     // Hash the password
-          const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await bcrypt.hash(password, 10);
 
     // Create a new teacher
     const newTeacher = await db.teacher.create({
@@ -71,16 +71,23 @@ export const teacherSignup = async (req: Request, res: Response) => {
         uniqueId: teacherId,
       },
     });
-    console.log(newTeacher)
-    const token = jwt.sign(newTeacher.id, "secretOrPrivateKey");
-    console.log(token) 
+
+    // Generate JWT token, including the teacher's id in the payload
+    const token = jwt.sign({ id: newTeacher.id }, "secretOrPrivateKey", { expiresIn: "1h" });
+
     // Registration successful, return the new teacher info
-    return res.status(201).json({ message: "Teacher registered successfully", token });
+    return res.status(201).json({
+      message: "Teacher registered successfully",
+      teacher: newTeacher,
+      token,
+       
+    });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error: "An error occurred during signup." });
   }
 };
+
 
 export const changePassword = async (req:Request,res:Response) =>{
   try{

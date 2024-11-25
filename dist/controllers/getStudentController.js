@@ -20,20 +20,9 @@ const getCardData = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     const teacherId = req.params.teacherId;
     console.log(teacherId);
     try {
-        const teacher = yield db_1.default.teacher.findUnique({
-            where: {
-                id: teacherId,
-            },
-            select: {
-                uniqueId: true,
-            },
-        });
-        console.log(teacher);
         const students = yield db_1.default.student.findMany({
             where: {
-                teacher: {
-                    uniqueId: teacher === null || teacher === void 0 ? void 0 : teacher.uniqueId
-                }
+                teacherId: teacherId
             },
             include: {
                 levelProgress: {
