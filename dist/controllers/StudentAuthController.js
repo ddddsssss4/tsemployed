@@ -58,6 +58,7 @@ const signUp = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const existingUser = yield db_1.default.student.findFirst({
         where: { email }
     });
+    console.log(existingUser);
     if (existingUser) {
         return res.status(400).json({ error: "User with this email already exists." });
     }

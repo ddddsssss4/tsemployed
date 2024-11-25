@@ -100,12 +100,14 @@ router.post('/teacher/verify-otp', async (req, res) => {
             console.log(tempStudent);
               // Call another route and pass some body
               const response = await axios.post('http://localhost:8081/api/v1/teacher/auth/signup', tempTeacher);
-  
+                console.log("Response",response.data);
+                console.log("Hogya bhai")
               res.status(200).json({
                   message: 'OTP verified successfully!',
                   anotherRouteResponse: response.data, // Include the response from the other route
               });
           } catch (error) {
+            console.log(error)
               res.status(500).json({
                   message: 'OTP verified, but error occurred in another route.',
                   error: error

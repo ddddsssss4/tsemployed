@@ -39,7 +39,7 @@ const teacherLogin = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         }
         const token = jsonwebtoken_1.default.sign(teacher.id, "secretOrPrivateKey");
         // Login successful, return the teacher info
-        return res.status(200).json({ message: "Login successful", token });
+        return res.status(200).json({ message: "Login successful", token, teacher: teacher });
     }
     catch (error) {
         console.error(error);
