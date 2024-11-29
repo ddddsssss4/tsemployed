@@ -6,11 +6,13 @@
 
 generator client {
   provider = "prisma-client-js"
+  binaryTargets = ["native", "windows" , "debian-openssl-3.0.x"]
+  engineType      = "binary"
 }
 
 datasource db {
   provider = "postgresql"
-  url      = "postgresql://content:1911@devS@content.postgres.database.azure.com:5432/postgres?sslmode=require&connect_timeout=15"
+  url      =  env("DATABASE_URL")
 }
 
 

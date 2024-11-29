@@ -5,8 +5,8 @@ const router = express.Router();
 import axios from 'axios';
 
 // Endpoint to send OTP
-let tempStudent: { email: string; teacherId: string; password: string; name: string } | null = null;
-let tempTeacher: {email : string; teacherId : string; password : string ; name : string} | null = null
+let tempStudent : { email: string; teacherId: string; password: string; name: string } | null = null;
+let tempTeacher : {email : string; teacherId : string; password : string ; name : string} | null = null
 let tem
 router.post('/student/send-otp', async (req, res) => {
     const { email , teacherId , password ,name } = req.body;
