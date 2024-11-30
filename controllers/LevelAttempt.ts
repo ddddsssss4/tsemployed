@@ -69,9 +69,6 @@ export const levelAttempt = async (req: Request, res: Response) => {
           levelId: level.id,
           completed: false,
           score: 0.0,
-          attempts: 0,
-          passCount: 0,
-          failCount: 0,
         },
       });
     }
@@ -121,27 +118,19 @@ export const levelAttempt = async (req: Request, res: Response) => {
             levelProgressId: levelProgress.id,
             subLevelId: sublevel.id,
             completed: false,
-            score: 0.0,
-            accuracy: 0,
-            attempts: 0,
-            passCount: 0,
-            failCount: 0,
+            scoreAzure: 0.0,
+            scoreCustom: 0.0,
+            accuracyAzure: 0,
+            attemptsAzure: 0,
+            passCountAzure: 0,
+            failCountAzure: 0,
+            accuracyCustom: 0,
+            attemptsCustom: 0,
+            passCountCustom: 0,
+            failCountCustom: 0,
           },
         });
-      } else {
-        // Optionally update existing SubLevelProgress records
-        await db.subLevelProgress.update({
-          where: { id: subLevelProgress.id },
-          data: {
-            completed: subLevelProgress.completed,
-            score: subLevelProgress.score,
-            accuracy: subLevelProgress.accuracy,
-            attempts: subLevelProgress.attempts,
-            passCount: subLevelProgress.passCount,
-            failCount: subLevelProgress.failCount,
-          },
-        });
-      }
+      } 
     }
 
     res.status(200).json({ message: 'Level attempt processed successfully.' });

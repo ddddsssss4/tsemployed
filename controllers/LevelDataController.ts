@@ -32,8 +32,8 @@ export const LevelData = async (req: Request, res: Response) => {
     for (const levelProgress of student.levelProgress) {
       for (const subLevelProgress of levelProgress.subLevelProgress) {
         // Filter based on the result query parameter
-        const passed = subLevelProgress.passCount > 0;
-        const failed = subLevelProgress.failCount > 0;
+        const passed = subLevelProgress.passCountAzure > 0;
+        const failed = subLevelProgress.failCountAzure > 0;
     
         if (
           (resultFilter === 'pass' && passed) ||
