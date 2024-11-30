@@ -23,10 +23,10 @@ export const LevelData = async (req: Request, res: Response) => {
     }
 
     // Initialize totals and counters
-    let totalAccuracy  = 0;
-    let totalPronunciation = 0;
-    let totalFluency = 0;
-    let subLevelCount = 0;
+    let totalAccuracy  = 0.0;
+    let totalPronunciation = 0.0;
+    let totalFluency = 0.0;
+    let subLevelCount = 0.0;
 
     // Iterate over levelProgress and subLevelProgress
     for (const levelProgress of student.levelProgress) {

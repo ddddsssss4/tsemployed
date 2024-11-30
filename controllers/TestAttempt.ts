@@ -7,7 +7,7 @@ export const testAttemptAzure = async (req: Request, res: Response) => {
   console.log("Inside controller of test attempt");
   
   console.log(req.body);
-
+  
   if (!total_score || !levelId || !sublevelNo || !studentId) {
     return res.status(400).json({ error: 'All fields are required.' });
   }
@@ -20,7 +20,7 @@ export const testAttemptAzure = async (req: Request, res: Response) => {
           studentId: Number.parseInt(studentId),
           levelId: Number.parseInt(levelId),
         },
-      },
+      } 
     });
 
     if (!levelProgress) {
@@ -64,8 +64,8 @@ export const testAttemptAzure = async (req: Request, res: Response) => {
           attemptsAzure: {
             increment: 1,
           },
-          passCountAzure: averageScore >= 8.5 ? { increment: 1 } : undefined,
-          failCountAzure: averageScore < 8.5 ? { increment: 1 } : undefined,
+          passCountAzure: total_score >= 8.5 ? { increment: 1 } : undefined,
+          failCountAzure: total_score < 8.5 ? { increment: 1 } : undefined,
         },
       });
     }
@@ -212,15 +212,15 @@ export const testAttemptCustom = async (req: Request, res: Response) => {
         where: { id: subLevelProgress.id },
         data: {
           scoreCustom: Number.parseFloat(total_score),
-          pronunciationAzure: Number.parseFloat(pronunciation),
-          fluencyAzure: Number.parseFloat(fluency),
+          pronunciationCustom: Number.parseFloat(pronunciation),
+          fluencyCustom: Number.parseFloat(fluency),
           completenessCustom: Number.parseFloat(completeness),
           completed: averageScore >= 8.5, // Mark as completed if average score is high enough
-          attemptsAzure: {
+          attemptsCustom: {
             increment: 1,
           },
-          passCountCustom: averageScore >= 8.5 ? { increment: 1 } : undefined,
-          failCountCustom: averageScore < 8.5 ? { increment: 1 } : undefined,
+          passCountCustom: total_score >= 8.5 ? { increment: 1 } : undefined,
+          failCountCustom: total_score < 8.5 ? { increment: 1 } : undefined,
         },
       });
     }
@@ -235,7 +235,7 @@ export const testAttemptCustom = async (req: Request, res: Response) => {
           fluencyCustom: Number.parseFloat(fluency),
           completenessCustom: Number.parseFloat(completeness),
           completed: false,
-          attemptsAzure: 1,
+          attemptsCustom: 1,
           passCountCustom: Number.parseFloat(total_score) >= 8.5 ? 1 : 0,
           failCountCustom: Number.parseFloat(total_score) < 8.5 ? 1 : 0,
           scoreAzure: Number.parseFloat("0.0"),
