@@ -19,7 +19,7 @@ export const getAllStudents = async (req: Request, res: Response) => {
 
 // Function for student signup
 export const signUp = async (req: Request, res: Response) => {
-  const { email, password, teacherId } = req.body;
+  const { email, password, teacherId ,name } = req.body;
 
   // Check if a user with this email already exists
   const existingUser = await db.student.findFirst({
@@ -38,7 +38,7 @@ export const signUp = async (req: Request, res: Response) => {
 
       // Create a new student
       const user = await db.student.create({
-        data: { email, password: hashedPassword, teacherId }
+        data: { email, password: hashedPassword, teacherId  , name: name}
       });
 
       // Ensure Level 1 exists and create it if not
