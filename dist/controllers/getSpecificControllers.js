@@ -44,8 +44,8 @@ const specificStudentData = (req, res) => __awaiter(void 0, void 0, void 0, func
             let levelFailCount = 0;
             // Calculate pass and fail counts for the current level's sub-levels
             progress.subLevelProgress.forEach((subLevel) => {
-                levelPassCount += subLevel.passCount; // Add to pass count
-                levelFailCount += subLevel.failCount; // Add to fail count
+                levelPassCount += subLevel.passCountAzure; // Add to pass count
+                levelFailCount += subLevel.failCountAzure; // Add to fail count
             });
             return {
                 levelId,

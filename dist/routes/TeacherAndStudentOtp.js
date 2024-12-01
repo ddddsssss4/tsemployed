@@ -51,7 +51,7 @@ router.post('/verify-otp', (req, res) => __awaiter(void 0, void 0, void 0, funct
             try {
                 console.log(tempStudent);
                 // Call another route and pass some body
-                const response = yield axios_1.default.post('http://localhost:8081/api/v1/student/auth/signup', tempStudent);
+                const response = yield axios_1.default.post('https://speechbk-asghe5g9d2fsfydr.eastus2-01.azurewebsites.net/api/v1/student/auth/signup', tempStudent);
                 res.status(200).json({
                     message: 'OTP verified successfully!',
                     anotherRouteResponse: response.data, // Include the response from the other route
@@ -102,7 +102,7 @@ router.post('/teacher/verify-otp', (req, res) => __awaiter(void 0, void 0, void 
             try {
                 console.log(tempStudent);
                 // Call another route and pass some body
-                const response = yield axios_1.default.post('http://localhost:8081/api/v1/teacher/auth/signup', tempTeacher);
+                const response = yield axios_1.default.post('https://speechbk-asghe5g9d2fsfydr.eastus2-01.azurewebsites.net/api/v1/teacher/auth/signup', tempTeacher);
                 console.log("Response", response.data);
                 console.log("Hogya bhai");
                 res.status(200).json({

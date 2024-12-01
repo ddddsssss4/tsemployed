@@ -72,9 +72,6 @@ const levelAttempt = (req, res) => __awaiter(void 0, void 0, void 0, function* (
                     levelId: level.id,
                     completed: false,
                     score: 0.0,
-                    attempts: 0,
-                    passCount: 0,
-                    failCount: 0,
                 },
             });
         }
@@ -117,25 +114,22 @@ const levelAttempt = (req, res) => __awaiter(void 0, void 0, void 0, function* (
                         levelProgressId: levelProgress.id,
                         subLevelId: sublevel.id,
                         completed: false,
-                        score: 0.0,
-                        accuracy: 0,
-                        attempts: 0,
-                        passCount: 0,
-                        failCount: 0,
-                    },
-                });
-            }
-            else {
-                // Optionally update existing SubLevelProgress records
-                yield db_1.default.subLevelProgress.update({
-                    where: { id: subLevelProgress.id },
-                    data: {
-                        completed: subLevelProgress.completed,
-                        score: subLevelProgress.score,
-                        accuracy: subLevelProgress.accuracy,
-                        attempts: subLevelProgress.attempts,
-                        passCount: subLevelProgress.passCount,
-                        failCount: subLevelProgress.failCount,
+                        scoreAzure: 0.0,
+                        scoreCustom: 0.0,
+                        completenessAzure: 0.0,
+                        completenessCustom: 0.0,
+                        pronunciationAzure: 0.0,
+                        pronunciationCustom: 0.0,
+                        fluencyAzure: 0.0,
+                        fluencyCustom: 0.0,
+                        passCountAzure: 0.0,
+                        failCountAzure: 0.0,
+                        accuracyCustom: 0.0,
+                        accuracyAzure: 0.0,
+                        attemptsCustom: 0.0,
+                        attemptsAzure: 0.0,
+                        passCountCustom: 0.0,
+                        failCountCustom: 0.0,
                     },
                 });
             }
