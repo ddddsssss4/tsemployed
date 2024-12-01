@@ -50,8 +50,9 @@ export const testAttemptAzure = async (req: Request, res: Response) => {
     if (subLevelProgress) {
       // Calculate the average score
       const a =subLevelProgress.scoreCustom;
-      const averageScore = (total_score + a) / 2;
-    
+      console.log(a);
+      const averageScore = (Number.parseFloat(total_score) + a) / 2;
+      console.log(averageScore);
       // Update existing record
       subLevelProgress = await db.subLevelProgress.update({
         where: { id: subLevelProgress.id },
@@ -205,7 +206,7 @@ export const testAttemptCustom = async (req: Request, res: Response) => {
     if (subLevelProgress) {
       // Calculate the average score
       const a =subLevelProgress.scoreAzure;
-      const averageScore = (total_score + a) / 2;
+      const averageScore = (Number.parseFloat(total_score) + a) / 2; // (total_score + a) / 2;
     
       // Update existing record
       subLevelProgress = await db.subLevelProgress.update({
