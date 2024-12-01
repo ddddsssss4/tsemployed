@@ -33,16 +33,16 @@ const LevelData = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             return res.status(404).json({ error: 'Student not found' });
         }
         // Initialize totals and counters
-        let totalAccuracy = 0;
-        let totalPronunciation = 0;
-        let totalFluency = 0;
-        let subLevelCount = 0;
+        let totalAccuracy = 0.0;
+        let totalPronunciation = 0.0;
+        let totalFluency = 0.0;
+        let subLevelCount = 0.0;
         // Iterate over levelProgress and subLevelProgress
         for (const levelProgress of student.levelProgress) {
             for (const subLevelProgress of levelProgress.subLevelProgress) {
                 // Filter based on the result query parameter
-                const passed = subLevelProgress.passCount > 0;
-                const failed = subLevelProgress.failCount > 0;
+                const passed = subLevelProgress.passCountAzure > 0;
+                const failed = subLevelProgress.failCountAzure > 0;
                 if ((resultFilter === 'pass' && passed) ||
                     (resultFilter === 'fail' && failed) ||
                     !resultFilter // If no filter is provided, include all

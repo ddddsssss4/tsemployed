@@ -42,7 +42,7 @@ router.post('/verify-otp', async (req, res) => {
           try {
             console.log(tempStudent);
               // Call another route and pass some body
-              const response = await axios.post('http://localhost:80/api/v1/student/auth/signup', tempStudent);
+              const response = await axios.post('https://speechbk-asghe5g9d2fsfydr.eastus2-01.azurewebsites.net/api/v1/student/auth/signup', tempStudent);
   
               res.status(200).json({
                   message: 'OTP verified successfully!',
@@ -99,7 +99,7 @@ router.post('/teacher/verify-otp', async (req, res) => {
           try {
             console.log(tempStudent);
               // Call another route and pass some body
-              const response = await axios.post('http://localhost:80/api/v1/teacher/auth/signup', tempTeacher);
+              const response = await axios.post('https://speechbk-asghe5g9d2fsfydr.eastus2-01.azurewebsites.net/api/v1/teacher/auth/signup', tempTeacher);
                 console.log("Response",response.data);
                 console.log("Hogya bhai")
               res.status(200).json({

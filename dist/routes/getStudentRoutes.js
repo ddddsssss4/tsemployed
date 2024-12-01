@@ -13,4 +13,10 @@ router.get('/student/data/:teacherId', (req, res) => {
 router.get('/student/cardDetails/:studentId', (req, res) => {
     (0, getStudentController_1.cardDetails)(req, res);
 });
+router.get('/student/data/custom/:teacherId', (req, res) => {
+    (0, getStudentController_1.getCardDataCustom)(req, res);
+});
+router.get('/student/cardDetails/custom/:studentId', (req, res) => {
+    (0, getStudentController_1.cardDetailsCustom)(req, res);
+});
 exports.default = router;
