@@ -77,69 +77,69 @@ export const LevelData = async (req: Request, res: Response) => {
   }
 };
 
-export const levelDataCustom = async (req: Request , res: Response) => {
-  try {
-   const studentId = Number.parseInt(req.params.studentId);
-   const resultFilter = req.query.result as string;
-   //Now we are fatching the student with their sublevel progress
-   const student = await db.student.findUnique({
-    where : {
-      id: studentId
-    },
-    include :{
-      levelProgress :{
-        include :{
-          subLevelProgress : true
-        },
-      },
-    },
-   })
+// export const levelDataCustom = async (req: Request , res: Response) => {
+//   try {
+//    const studentId = Number.parseInt(req.params.studentId);
+//    const resultFilter = req.query.result as string;
+//    //Now we are fatching the student with their sublevel progress
+//    const student = await db.student.findUnique({
+//     where : {
+//       id: studentId
+//     },
+//     include :{
+//       levelProgress :{
+//         include :{
+//           subLevelProgress : true
+//         },
+//       },
+//     },
+//    })
 
-   if(!student){
-    return res.status(404).json({error : "student not found "});
-   }
+//    if(!student){
+//     return res.status(404).json({error : "student not found "});
+//    }
 
-   let totalCompleteness = 0.0;
-   let totalFluency = 0.0;
-   let subLevelCount = 0.0;
-   let totalPronunciation = 0.0;
+//    let totalCompleteness = 0.0;
+//    let totalFluency = 0.0;
+//    let subLevelCount = 0.0;
+//    let totalPronunciation = 0.0;
 
-   for(const levelProgress of student.levelProgress){
-    for(const subLevelProgress of levelProgress.subLevelProgress){
-      const passed = subLevelProgress.passCountCustom > 0;
-      const failed = subLevelProgress.failCountCustom > 0;
+//    for(const levelProgress of student.levelProgress){
+//     for(const subLevelProgress of levelProgress.subLevelProgress){
+//       const passed = subLevelProgress.passCountCustom > 0;
+//       const failed = subLevelProgress.failCountCustom > 0;
 
-      if(
-        (resultFilter === 'pass' && passed) ||
-        (resultFilter === 'fail' && failed) ||
-        !resultFilter // If no filter is provided, include all
-      ){
-        // @ts-ignore
-        totalCompleteness += subLevelProgress.completenessCustom;
-        // @ts-ignore
-        totalPronunciation += subLevelProgress.pronunciationCustom;
-        // @ts-ignore
-        totalFluency += subLevelProgress.fluencyCustom;
-        subLevelCount++;
-      }
+//       if(
+//         (resultFilter === 'pass' && passed) ||
+//         (resultFilter === 'fail' && failed) ||
+//         !resultFilter // If no filter is provided, include all
+//       ){
+//         // @ts-ignore
+//         totalCompleteness += subLevelProgress.completenessCustom;
+//         // @ts-ignore
+//         totalPronunciation += subLevelProgress.pronunciationCustom;
+//         // @ts-ignore
+//         totalFluency += subLevelProgress.fluencyCustom;
+//         subLevelCount++;
+//       }
       
 
-    }
-   }
+//     }
+//    }
 
-   const averageCompleteness = subLevelCount > 0 ? (totalCompleteness / subLevelCount).toFixed(2) : 0;
-   const averagePronunciation = subLevelCount > 0 ? (totalPronunciation / subLevelCount).toFixed(2) : 0;
-   const averageFluency = subLevelCount > 0 ? (totalFluency / subLevelCount).toFixed(2) : 0;
+//    const averageCompleteness = subLevelCount > 0 ? (totalCompleteness / subLevelCount).toFixed(2) : 0;
+//    const averagePronunciation = subLevelCount > 0 ? (totalPronunciation / subLevelCount).toFixed(2) : 0;
+//    const averageFluency = subLevelCount > 0 ? (totalFluency / subLevelCount).toFixed(2) : 0;
 
-   res.status(200).json({
-    studentId: student.id,
-    name: student.name,
-    averageCompleteness:averageCompleteness,
-    averagePronunciation:averagePronunciation,
-    averageFluency:averageFluency,
-   })
-  }catch(error){
-    console.log(error);
-  }
-}
+//    res.status(200).json({
+//     studentId: student.id,
+//     name: student.name,
+//     averageCompleteness:averageCompleteness,
+//     averagePronunciation:averagePronunciation,
+//     averageFluency:averageFluency,
+//    })
+//   }catch(error){
+//     console.log(error);
+//   }
+// }
 

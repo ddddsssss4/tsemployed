@@ -2,7 +2,7 @@ import type { Request, Response } from "express";
 import db from '../lib/db';
 
 export const levelAttempt = async (req: Request, res: Response) => {
-  const { studentId, sub_level, targetLevel } = req.body;
+  const { studentId, sub_level, targetLevel , langaugeModelID } = req.body;
   console.log(req.body);
 
   if (!studentId || sub_level === undefined || !targetLevel) {
@@ -119,21 +119,15 @@ export const levelAttempt = async (req: Request, res: Response) => {
             subLevelId: sublevel.id,
             completed: false,
             scoreAzure: 0.0,
-            scoreCustom: 0.0,
             completenessAzure: 0.0,
-            completenessCustom: 0.0,
             pronunciationAzure: 0.0,
-            pronunciationCustom: 0.0,
             fluencyAzure: 0.0,
-            fluencyCustom: 0.0,
             passCountAzure: 0.0,
             failCountAzure: 0.0,
-            accuracyCustom: 0.0,
             accuracyAzure: 0.0,
-            attemptsCustom: 0.0,
             attemptsAzure: 0.0,
-            passCountCustom: 0.0,
-            failCountCustom: 0.0,
+            langaugeModelID: langaugeModelID
+          
           },
         });
       } 

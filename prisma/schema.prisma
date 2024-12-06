@@ -86,21 +86,14 @@ model SubLevelProgress {
   accuracyAzure          Float?
   completenessAzure      Float?
   pronunciationAzure     Float? 
-  fluencyAzure           Float? 
-  scoreCustom            Float
-  accuracyCustom         Float?
-  completenessCustom     Float?
-  pronunciationCustom    Float?
-  fluencyCustom          Float?
+  fluencyAzure           Float?    
   attemptsAzure          Int            @default(0)    // Track the number of attempts taken
   passCountAzure         Int            @default(0)    // Track the number of times the sub-level was passed
   failCountAzure         Int            @default(0)    // Track the number of times the sub-level was failed
-  attemptsCustom         Int            @default(0)
-  passCountCustom        Int            @default(0)
-  failCountCustom        Int            @default(0)
   levelProgress          LevelProgress  @relation(fields: [levelProgressId], references: [id])
   subLevel               SubLevel       @relation(fields: [subLevelId], references: [id])
-
+  langaugeModelID        String
+  langaugeModel          LanguageModel @relation(fields: [langaugeModelID ] , references: [modelNo])
   @@unique([levelProgressId, subLevelId]) // Ensure uniqueness of the combination
 }
 
@@ -118,4 +111,15 @@ model StudentDetail {
   background    String?
   type         StudentType?
   imageUrl      String?
+}
+
+model LanguageModel {
+  id           String   @id @default(cuid())
+  modelName    String   
+  modelNo      String   @unique @default("Azure-001")
+  description  String?    
+  version      String?
+  createdAt    DateTime @default(now())
+  subLevelProgress SubLevelProgress[]
+
 }
