@@ -58,9 +58,9 @@ const LevelData = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             }
         }
         // Calculate the averages
-        const averageCompleteness = subLevelCount > 0 ? (totalCompleteness / subLevelCount).toFixed(2) : 0;
-        const averagePronunciation = subLevelCount > 0 ? (totalPronunciation / subLevelCount).toFixed(2) : 0;
-        const averageFluency = subLevelCount > 0 ? (totalFluency / subLevelCount).toFixed(2) : 0;
+        const averageCompleteness = subLevelCount > 0 ? parseInt((totalCompleteness / subLevelCount).toFixed(2)) * 100 : 0;
+        const averagePronunciation = subLevelCount > 0 ? parseInt((totalPronunciation / subLevelCount).toFixed(2)) * 100 : 0;
+        const averageFluency = subLevelCount > 0 ? parseInt((totalFluency / subLevelCount).toFixed(2)) * 100 : 0;
         console.log(student.id);
         console.log(student.name);
         console.log(averageCompleteness);

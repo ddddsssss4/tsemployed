@@ -15,7 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.levelAttempt = void 0;
 const db_1 = __importDefault(require("../lib/db"));
 const levelAttempt = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { studentId, sub_level, targetLevel, langaugeModelID } = req.body;
+    const { studentId, sub_level, targetLevel, langaugeModelID1, langaugeModelID2 } = req.body;
     console.log(req.body);
     if (!studentId || sub_level === undefined || !targetLevel) {
         return res.status(400).json({ error: "All fields are required" });
@@ -100,12 +100,10 @@ const levelAttempt = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         // Create or update SubLevelProgress records for all relevant sub-levels
         for (let i = 0; i < sub_level; i++) {
             const sublevel = allSubLevels[i];
-            const subLevelProgress = yield db_1.default.subLevelProgress.findUnique({
+            const subLevelProgress = yield db_1.default.subLevelProgress.findMany({
                 where: {
-                    levelProgressId_subLevelId: {
-                        levelProgressId: levelProgress.id,
-                        subLevelId: sublevel.id,
-                    },
+                    levelProgressId: levelProgress.id,
+                    subLevelId: sublevel.id,
                 },
             });
             if (!subLevelProgress) {
@@ -122,7 +120,23 @@ const levelAttempt = (req, res) => __awaiter(void 0, void 0, void 0, function* (
                         failCountAzure: 0.0,
                         accuracyAzure: 0.0,
                         attemptsAzure: 0.0,
-                        langaugeModelID: langaugeModelID
+                        langaugeModelID: langaugeModelID1
+                    },
+                });
+                yield db_1.default.subLevelProgress.create({
+                    data: {
+                        levelProgressId: levelProgress.id,
+                        subLevelId: sublevel.id,
+                        completed: false,
+                        scoreAzure: 0.0,
+                        completenessAzure: 0.0,
+                        pronunciationAzure: 0.0,
+                        fluencyAzure: 0.0,
+                        passCountAzure: 0.0,
+                        failCountAzure: 0.0,
+                        accuracyAzure: 0.0,
+                        attemptsAzure: 0.0,
+                        langaugeModelID: langaugeModelID2
                     },
                 });
             }

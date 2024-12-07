@@ -108,7 +108,8 @@ export const login = async (req: Request, res: Response) => {
       student: {
         id: student.id,
         email: student.email,
-        teacherId: student.teacherId
+        teacherId: student.teacherId,
+        name: student.name
       },
       token:token
     });

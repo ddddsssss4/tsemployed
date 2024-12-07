@@ -15,21 +15,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.testAttemptAzure = void 0;
 const db_1 = __importDefault(require("../lib/db"));
 const testAttemptAzure = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { total_score, levelId, sublevelNo, studentId, pronunciation, fluency, completeness, languageModelID, // Corrected spelling
-     } = req.body;
-    console.log("Inside controller of test attempt");
-    console.log(req.body);
+    const { total_score, levelId, sublevelNo, studentId, pronunciation, fluency, completeness, languageModelID, } = req.body;
     if (!total_score || !levelId || !sublevelNo || !studentId || !languageModelID) {
         return res.status(400).json({ error: 'All fields are required.' });
     }
     try {
         // Fetch level progress for the student
-        const levelProgress = yield db_1.default.levelProgress.findUnique({
+        const levelProgress = yield db_1.default.levelProgress.findMany({
             where: {
-                studentId_levelId: {
-                    studentId: Number.parseInt(studentId),
-                    levelId: Number.parseInt(levelId),
-                },
+                studentId: Number.parseInt(studentId),
+                levelId: Number.parseInt(levelId),
             },
         });
         if (!levelProgress) {
@@ -48,12 +43,13 @@ const testAttemptAzure = (req, res) => __awaiter(void 0, void 0, void 0, functio
         // Fetch or create sublevel progress record for the specific language model
         let subLevelProgress = yield db_1.default.subLevelProgress.findFirst({
             where: {
-                levelProgressId: levelProgress.id,
+                levelProgressId: levelProgress[0].id,
                 subLevelId: subLevel.id,
                 langaugeModelID: languageModelID, // Match based on language model ID
             },
         });
-        if (subLevelProgress) {
+        console.log(subLevelProgress);
+        if (subLevelProgress !== null) {
             // Update existing record
             subLevelProgress = yield db_1.default.subLevelProgress.update({
                 where: { id: subLevelProgress.id },
@@ -70,12 +66,13 @@ const testAttemptAzure = (req, res) => __awaiter(void 0, void 0, void 0, functio
                     failCountAzure: total_score < 8.5 ? { increment: 1 } : undefined,
                 },
             });
+            console.log("going in else");
         }
         else {
             // Create a new record
             subLevelProgress = yield db_1.default.subLevelProgress.create({
                 data: {
-                    levelProgressId: levelProgress.id,
+                    levelProgressId: levelProgress[0].id,
                     subLevelId: subLevel.id,
                     scoreAzure: Number.parseFloat(total_score),
                     pronunciationAzure: Number.parseFloat(pronunciation),
@@ -95,14 +92,14 @@ const testAttemptAzure = (req, res) => __awaiter(void 0, void 0, void 0, functio
         });
         const completedSubLevels = yield db_1.default.subLevelProgress.count({
             where: {
-                levelProgressId: levelProgress.id,
+                levelProgressId: levelProgress[0].id,
                 completed: true,
             },
         });
         if (completedSubLevels === totalSubLevels) {
             // Mark the level as completed
             yield db_1.default.levelProgress.update({
-                where: { id: levelProgress.id },
+                where: { id: levelProgress[0].id },
                 data: { completed: true },
             });
             // Check if there's a next level and create it if necessary

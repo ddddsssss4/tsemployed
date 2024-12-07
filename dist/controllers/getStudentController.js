@@ -68,6 +68,7 @@ const cardDetails = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     try {
         const studentId = Number.parseInt(req.params.studentId);
         const languageModelId = req.params.languageModelId;
+        console.log(studentId, languageModelId);
         const student = yield db_1.default.student.findUnique({
             where: { id: studentId },
             select: { name: true, email: true },

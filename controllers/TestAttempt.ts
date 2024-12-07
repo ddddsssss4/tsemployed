@@ -19,12 +19,12 @@ export const testAttemptAzure = async (req: Request, res: Response) => {
 
   try {
     // Fetch level progress for the student
-    const levelProgress = await db.levelProgress.findUnique({
+    const levelProgress = await db.levelProgress.findMany({
       where: {
-        studentId_levelId: {
+   
           studentId: Number.parseInt(studentId),
           levelId: Number.parseInt(levelId),
-        },
+        
       },
     });
 
@@ -47,7 +47,7 @@ export const testAttemptAzure = async (req: Request, res: Response) => {
     // Fetch or create sublevel progress record for the specific language model
     let subLevelProgress = await db.subLevelProgress.findFirst({
       where: {
-        levelProgressId: levelProgress.id,
+        levelProgressId: levelProgress[0].id,
         subLevelId: subLevel.id,
         langaugeModelID: languageModelID, // Match based on language model ID
       },
@@ -75,7 +75,7 @@ export const testAttemptAzure = async (req: Request, res: Response) => {
       // Create a new record
       subLevelProgress = await db.subLevelProgress.create({
         data: {
-          levelProgressId: levelProgress.id,
+          levelProgressId: levelProgress[0].id,
           subLevelId: subLevel.id,
           scoreAzure: Number.parseFloat(total_score),
           pronunciationAzure: Number.parseFloat(pronunciation),
@@ -97,7 +97,7 @@ export const testAttemptAzure = async (req: Request, res: Response) => {
 
     const completedSubLevels = await db.subLevelProgress.count({
       where: {
-        levelProgressId: levelProgress.id,
+        levelProgressId: levelProgress[0].id,
         completed: true,
       },
     });
@@ -105,7 +105,7 @@ export const testAttemptAzure = async (req: Request, res: Response) => {
     if (completedSubLevels === totalSubLevels) {
       // Mark the level as completed
       await db.levelProgress.update({
-        where: { id: levelProgress.id },
+        where: { id: levelProgress[0].id },
         data: { completed: true },
       });
 

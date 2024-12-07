@@ -123,7 +123,8 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             student: {
                 id: student.id,
                 email: student.email,
-                teacherId: student.teacherId
+                teacherId: student.teacherId,
+                name: student.name
             },
             token: token
         });
