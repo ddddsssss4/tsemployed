@@ -94,7 +94,7 @@ model SubLevelProgress {
   subLevel               SubLevel       @relation(fields: [subLevelId], references: [id])
   langaugeModelID        String
   langaugeModel          LanguageModel @relation(fields: [langaugeModelID ] , references: [modelNo])
-  @@unique([levelProgressId, subLevelId]) // Ensure uniqueness of the combination
+
 }
 
 

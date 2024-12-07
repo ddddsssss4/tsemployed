@@ -53,7 +53,7 @@ const getAllStudents = (req, res) => __awaiter(void 0, void 0, void 0, function*
 exports.getAllStudents = getAllStudents;
 // Function for student signup
 const signUp = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { email, password, teacherId } = req.body;
+    const { email, password, teacherId, name } = req.body;
     // Check if a user with this email already exists
     const existingUser = yield db_1.default.student.findFirst({
         where: { email }
@@ -67,7 +67,7 @@ const signUp = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const hashedPassword = yield bcryptjs_1.default.hash(password, 10);
         // Create a new student
         const user = yield db_1.default.student.create({
-            data: { email, password: hashedPassword, teacherId }
+            data: { email, password: hashedPassword, teacherId, name: name }
         });
         // Ensure Level 1 exists and create it if not
         let level = yield db_1.default.level.findFirst({

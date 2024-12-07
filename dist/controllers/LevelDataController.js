@@ -33,7 +33,7 @@ const LevelData = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             return res.status(404).json({ error: 'Student not found' });
         }
         // Initialize totals and counters
-        let totalAccuracy = 0.0;
+        let totalCompleteness = 0.0;
         let totalPronunciation = 0.0;
         let totalFluency = 0.0;
         let subLevelCount = 0.0;
@@ -48,29 +48,29 @@ const LevelData = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                     !resultFilter // If no filter is provided, include all
                 ) {
                     // @ts-ignore
-                    totalAccuracy += subLevelProgress.accuracy;
+                    totalCompleteness += subLevelProgress.completenessAzure;
                     // @ts-ignore
-                    totalPronunciation += subLevelProgress.pronunciation;
+                    totalPronunciation += subLevelProgress.pronunciationAzure;
                     // @ts-ignore
-                    totalFluency += subLevelProgress.fluency;
+                    totalFluency += subLevelProgress.fluencyAzure;
                     subLevelCount++;
                 }
             }
         }
         // Calculate the averages
-        const averageAccuracy = subLevelCount > 0 ? (totalAccuracy / subLevelCount).toFixed(2) : 0;
+        const averageCompleteness = subLevelCount > 0 ? (totalCompleteness / subLevelCount).toFixed(2) : 0;
         const averagePronunciation = subLevelCount > 0 ? (totalPronunciation / subLevelCount).toFixed(2) : 0;
         const averageFluency = subLevelCount > 0 ? (totalFluency / subLevelCount).toFixed(2) : 0;
         console.log(student.id);
         console.log(student.name);
-        console.log(averageAccuracy);
+        console.log(averageCompleteness);
         console.log(averageFluency);
         console.log(averagePronunciation);
         // Return the averages
         res.status(200).json({
             studentId: student.id,
             name: student.name,
-            averageAccuracy: averageAccuracy,
+            averageCompleteness: averageCompleteness,
             averagePronunciation: averagePronunciation,
             averageFluency: averageFluency,
         });
@@ -81,3 +81,60 @@ const LevelData = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.LevelData = LevelData;
+// export const levelDataCustom = async (req: Request , res: Response) => {
+//   try {
+//    const studentId = Number.parseInt(req.params.studentId);
+//    const resultFilter = req.query.result as string;
+//    //Now we are fatching the student with their sublevel progress
+//    const student = await db.student.findUnique({
+//     where : {
+//       id: studentId
+//     },
+//     include :{
+//       levelProgress :{
+//         include :{
+//           subLevelProgress : true
+//         },
+//       },
+//     },
+//    })
+//    if(!student){
+//     return res.status(404).json({error : "student not found "});
+//    }
+//    let totalCompleteness = 0.0;
+//    let totalFluency = 0.0;
+//    let subLevelCount = 0.0;
+//    let totalPronunciation = 0.0;
+//    for(const levelProgress of student.levelProgress){
+//     for(const subLevelProgress of levelProgress.subLevelProgress){
+//       const passed = subLevelProgress.passCountCustom > 0;
+//       const failed = subLevelProgress.failCountCustom > 0;
+//       if(
+//         (resultFilter === 'pass' && passed) ||
+//         (resultFilter === 'fail' && failed) ||
+//         !resultFilter // If no filter is provided, include all
+//       ){
+//         // @ts-ignore
+//         totalCompleteness += subLevelProgress.completenessCustom;
+//         // @ts-ignore
+//         totalPronunciation += subLevelProgress.pronunciationCustom;
+//         // @ts-ignore
+//         totalFluency += subLevelProgress.fluencyCustom;
+//         subLevelCount++;
+//       }
+//     }
+//    }
+//    const averageCompleteness = subLevelCount > 0 ? (totalCompleteness / subLevelCount).toFixed(2) : 0;
+//    const averagePronunciation = subLevelCount > 0 ? (totalPronunciation / subLevelCount).toFixed(2) : 0;
+//    const averageFluency = subLevelCount > 0 ? (totalFluency / subLevelCount).toFixed(2) : 0;
+//    res.status(200).json({
+//     studentId: student.id,
+//     name: student.name,
+//     averageCompleteness:averageCompleteness,
+//     averagePronunciation:averagePronunciation,
+//     averageFluency:averageFluency,
+//    })
+//   }catch(error){
+//     console.log(error);
+//   }
+// }

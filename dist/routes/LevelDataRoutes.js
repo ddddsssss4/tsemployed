@@ -8,4 +8,6 @@ const LevelDataController_1 = require("../controllers/LevelDataController");
 const router = express_1.default.Router();
 //@ts-ignore
 router.get('/student/:studentId', LevelDataController_1.LevelData);
+//@ts-ignore
+//router.get('/custom/student/:studentId',levelDataCustom);
 exports.default = router;

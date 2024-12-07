@@ -68,7 +68,7 @@ export const cardDetails = async (req: Request, res: Response) => {
   try {
     const studentId = Number.parseInt(req.params.studentId);
     const languageModelId = req.params.languageModelId;
-
+    console.log(studentId, languageModelId);
     const student = await db.student.findUnique({
       where: { id: studentId },
       select: { name: true, email: true },

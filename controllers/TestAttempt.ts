@@ -10,11 +10,8 @@ export const testAttemptAzure = async (req: Request, res: Response) => {
     pronunciation,
     fluency,
     completeness,
-    languageModelID, // Corrected spelling
+    languageModelID, 
   } = req.body;
-
-  console.log("Inside controller of test attempt");
-  console.log(req.body);
 
   if (!total_score || !levelId || !sublevelNo || !studentId || !languageModelID) {
     return res.status(400).json({ error: 'All fields are required.' });
@@ -55,8 +52,8 @@ export const testAttemptAzure = async (req: Request, res: Response) => {
         langaugeModelID: languageModelID, // Match based on language model ID
       },
     });
-
-    if (subLevelProgress) {
+    console.log(subLevelProgress);
+    if (subLevelProgress!==null) {
       // Update existing record
       subLevelProgress = await db.subLevelProgress.update({
         where: { id: subLevelProgress.id },
@@ -73,6 +70,7 @@ export const testAttemptAzure = async (req: Request, res: Response) => {
           failCountAzure: total_score < 8.5 ? { increment: 1 } : undefined,
         },
       });
+      console.log("going in else")
     } else {
       // Create a new record
       subLevelProgress = await db.subLevelProgress.create({

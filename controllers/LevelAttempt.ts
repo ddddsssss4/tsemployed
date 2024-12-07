@@ -2,7 +2,7 @@ import type { Request, Response } from "express";
 import db from '../lib/db';
 
 export const levelAttempt = async (req: Request, res: Response) => {
-  const { studentId, sub_level, targetLevel , langaugeModelID } = req.body;
+  const { studentId, sub_level, targetLevel , langaugeModelID1 , langaugeModelID2 } = req.body;
   console.log(req.body);
 
   if (!studentId || sub_level === undefined || !targetLevel) {
@@ -103,12 +103,11 @@ export const levelAttempt = async (req: Request, res: Response) => {
     for (let i = 0; i < sub_level; i++) {
       const sublevel = allSubLevels[i];
 
-      const subLevelProgress = await db.subLevelProgress.findUnique({
+      const subLevelProgress = await db.subLevelProgress.findMany({
         where: {
-          levelProgressId_subLevelId: {
-            levelProgressId: levelProgress.id,
-            subLevelId: sublevel.id,
-          },
+          levelProgressId: levelProgress.id,
+          subLevelId: sublevel.id,
+          
         },
       });
 
@@ -126,10 +125,26 @@ export const levelAttempt = async (req: Request, res: Response) => {
             failCountAzure: 0.0,
             accuracyAzure: 0.0,
             attemptsAzure: 0.0,
-            langaugeModelID: langaugeModelID
+            langaugeModelID: langaugeModelID1
           
           },
         });
+        await db.subLevelProgress.create({
+          data: {
+            levelProgressId: levelProgress.id,
+            subLevelId: sublevel.id,
+            completed: false,
+            scoreAzure: 0.0,
+            completenessAzure: 0.0,
+            pronunciationAzure: 0.0,
+            fluencyAzure: 0.0,
+            passCountAzure: 0.0,
+            failCountAzure: 0.0,
+            accuracyAzure: 0.0,
+            attemptsAzure: 0.0,
+            langaugeModelID: langaugeModelID2
+          },
+        })
       } 
     }
 

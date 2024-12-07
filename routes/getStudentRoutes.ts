@@ -3,11 +3,11 @@ import { cardData,cardDetails} from '../controllers/getStudentController';
 
 const router = express.Router();
 
-router.get('/student/data/:teacherId', (req: Request, res: Response) => { 
+router.get('/student/data/:teacherId/:languageModelId', (req: Request, res: Response) => { 
   cardData(req, res); 
 })
   //@ts-ignore
-router.get('/student/cardDetails/:studentId', (req: request, res: Response) => {
+router.get('/student/cardDetails/:studentId/:languageModelId', (req: request, res: Response) => {
   cardDetails(req, res);
 });
 
